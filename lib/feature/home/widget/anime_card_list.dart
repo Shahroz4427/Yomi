@@ -142,9 +142,9 @@ class _AnimeCardListState extends State<AnimeCardList> {
                 child: const Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text('View all'),
+                    Text('View all',style: TextStyle(color: Colors.white),),
                     SizedBox(width: 3),
-                    Icon(Icons.chevron_right_rounded, size: 17),
+                    Icon(Icons.chevron_right_rounded, size: 17,color: Colors.white,),
                   ],
                 ),
               ),

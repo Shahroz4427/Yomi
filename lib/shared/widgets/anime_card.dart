@@ -232,7 +232,7 @@ class AnimeCard extends StatelessWidget {
                           vertical: 3,
                         ),
                         decoration: BoxDecoration(
-                          color: colors.primary.withValues(alpha: 0.08),
+                          color: colors.primary.withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(5),
                         ),
                         child: Text(
@@ -242,7 +242,7 @@ class AnimeCard extends StatelessWidget {
                           style: theme.textTheme.labelSmall?.copyWith(
                             fontSize: 9,
                             fontWeight: FontWeight.w700,
-                            color: colors.primary,
+                            color: Colors.orange,
                           ),
                         ),
                       ),

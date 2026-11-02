@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:yomi/core/layout/search_screen.dart';
 
 class TopBar extends StatelessWidget implements PreferredSizeWidget {
   const TopBar({super.key});
@@ -30,7 +31,12 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
       actions: [
         IconButton(
           onPressed: () {
-            // TODO: Open search screen
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const SearchScreen(),
+              ),
+            );
           },
           icon: const Icon(Icons.search),
           tooltip: 'Search anime',
