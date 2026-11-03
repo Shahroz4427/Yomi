@@ -58,7 +58,7 @@ class AllTimePopular extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(top: 20, left: 5, right: 5),
       child: AnimeCardList(
-        title: 'AllTime Popular',
+        title: 'All-Time Popular',
         onViewAll: () {},
         onAnimeTap: (anime) {},
         items: allTimePopularAnimes,
