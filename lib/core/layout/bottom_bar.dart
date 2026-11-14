@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
 
-class BottomBar extends StatefulWidget {
-  const BottomBar({super.key});
+class BottomBar extends StatelessWidget {
+  final int selectedIndex;
+  final ValueChanged<int> onItemSelected;
 
-  @override
-  State<BottomBar> createState() => _BottomBarState();
-}
+  const BottomBar({
+    super.key,
+    required this.selectedIndex,
+    required this.onItemSelected,
+  });
 
-class _BottomBarState extends State<BottomBar> {
-  int _selectedIndex = 0;
-
-  final List<Map<String, dynamic>> _items = [
-    {'icon': Icons.home_outlined, 'activeIcon': Icons.home, 'label': 'Home'},
+  final List<Map<String, dynamic>> _items = const [
+    {
+      'icon': Icons.home_outlined,
+      'activeIcon': Icons.home,
+      'label': 'Home',
+    },
     {
       'icon': Icons.grid_view_rounded,
       'activeIcon': Icons.grid_view_rounded,
@@ -43,7 +47,9 @@ class _BottomBarState extends State<BottomBar> {
       decoration: BoxDecoration(
         color: theme.scaffoldBackgroundColor,
         border: Border(
-          top: BorderSide(color: theme.dividerColor.withValues(alpha: 0.5)),
+          top: BorderSide(
+            color: theme.dividerColor.withValues(alpha: 0.5),
+          ),
         ),
       ),
       child: SafeArea(
@@ -51,18 +57,14 @@ class _BottomBarState extends State<BottomBar> {
         child: Row(
           children: List.generate(_items.length, (index) {
             final item = _items[index];
-            final isSelected = _selectedIndex == index;
+            final isSelected = selectedIndex == index;
 
             return Expanded(
               child: InkWell(
                 borderRadius: BorderRadius.circular(16),
                 splashColor: primary.withValues(alpha: 0.18),
                 highlightColor: primary.withValues(alpha: 0.08),
-                onTap: () {
-                  setState(() {
-                    _selectedIndex = index;
-                  });
-                },
+                onTap: () => onItemSelected(index),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10),
                   child: Column(
@@ -84,13 +86,14 @@ class _BottomBarState extends State<BottomBar> {
                         child: AnimatedScale(
                           scale: isSelected ? 1.08 : 1.0,
                           duration: const Duration(milliseconds: 180),
-                          curve: Curves.easeOut,
                           child: Icon(
                             isSelected
-                                ? item['activeIcon'] as IconData
-                                : item['icon'] as IconData,
+                                ? item['activeIcon']
+                                : item['icon'],
                             size: 23,
-                            color: isSelected ? primary : Colors.white70,
+                            color: isSelected
+                                ? primary
+                                : Colors.white70,
                           ),
                         ),
                       ),
@@ -104,7 +107,10 @@ class _BottomBarState extends State<BottomBar> {
                               ? FontWeight.w600
                               : FontWeight.normal,
                         ),
-                        child: Text(item['label'] as String, maxLines: 1),
+                        child: Text(
+                          item['label'],
+                          maxLines: 1,
+                        ),
                       ),
                     ],
                   ),

@@ -1,6 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:yomi/model/anime_banner.dart';
-
+import 'package:flutter/material.dart';
 import 'dart:ui' show ImageFilter;
 
 class BannerPagination extends StatelessWidget {

@@ -1,8 +1,8 @@
-import 'package:flutter/material.dart';
+import 'package:yomi/shared/widgets/arrow_button.dart';
+import 'package:yomi/shared/widgets/anime_card.dart';
 import 'package:yomi/core/theme/app_theme.dart';
 import 'package:yomi/model/anime_item.dart';
-import 'package:yomi/shared/widgets/anime_card.dart';
-import 'package:yomi/shared/widgets/arrow_button.dart';
+import 'package:flutter/material.dart';
 
 class AnimeCardList extends StatefulWidget {
 
