@@ -13,12 +13,16 @@ class HomeAnimeSection extends StatelessWidget {
     required this.items,
     required this.icon,
     required this.iconColor,
+    required this.onViewAll,
+    required this.onAnimeTap,
   });
 
   final String title;
   final List<AnimeItem> items;
   final IconData icon;
   final Color iconColor;
+  final VoidCallback onViewAll;
+  final ValueChanged<AnimeItem> onAnimeTap;
 
   static const double _cardWidth = 150;
 
@@ -28,10 +32,8 @@ class HomeAnimeSection extends StatelessWidget {
       padding: const EdgeInsets.only(top: 20, left: 5, right: 5),
       child: AnimeCardList(
         title: title,
-        // TODO: open the full list for this section.
-        onViewAll: () {},
-        // TODO: open the anime details screen.
-        onAnimeTap: (anime) {},
+        onViewAll: onViewAll,
+        onAnimeTap: onAnimeTap,
         items: items,
         cardWidth: _cardWidth,
         topIcon: icon,

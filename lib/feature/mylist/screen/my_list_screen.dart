@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:yomi/data/models/my_list_entry.dart';
+import 'package:yomi/data/repositories/anime_repository.dart';
 import 'package:yomi/data/repositories/my_list_repository.dart';
+import 'package:yomi/feature/details/anime_details_navigation.dart';
 import 'package:yomi/feature/mylist/my_list_sort.dart';
 import 'package:yomi/feature/mylist/widget/my_list_entries.dart';
 import 'package:yomi/feature/mylist/widget/my_list_filter_bar.dart';
@@ -12,9 +14,16 @@ import 'package:yomi/feature/mylist/widget/my_list_stats.dart';
 
 /// My List tab: statistics, status filter, sort and the saved anime.
 class MyListScreen extends StatefulWidget {
-  const MyListScreen({super.key, required this.repository});
+  const MyListScreen({
+    super.key,
+    required this.repository,
+    required this.animeRepository,
+  });
 
   final MyListRepository repository;
+
+  /// Used to open the details screen of a saved anime.
+  final AnimeRepository animeRepository;
 
   @override
   State<MyListScreen> createState() => _MyListScreenState();
@@ -99,6 +108,13 @@ class _MyListScreenState extends State<MyListScreen> {
                 const SizedBox(height: 12),
                 MyListEntries(
                   entries: visibleEntries,
+                  onEntryTap: (entry) {
+                    openAnimeDetails(
+                      context,
+                      anime: entry.anime,
+                      repository: widget.animeRepository,
+                    );
+                  },
                   onOptionsTap: () => showMyListOptionsSheet(context: context),
                 ),
               ],

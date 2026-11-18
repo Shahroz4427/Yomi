@@ -6,15 +6,29 @@ import 'package:yomi/shared/widgets/poster_image.dart';
 /// One row of the ranking: rank, poster, title with info chips, and rating.
 /// The first place gets a highlighted background.
 class TopAnimeTile extends StatelessWidget {
-  const TopAnimeTile({super.key, required this.anime, required this.rank});
+  const TopAnimeTile({
+    super.key,
+    required this.anime,
+    required this.rank,
+    required this.onTap,
+  });
 
   final AnimeItem anime;
   final int rank;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
     final isFirst = rank == 1;
 
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: onTap,
+      child: _buildCard(isFirst),
+    );
+  }
+
+  Widget _buildCard(bool isFirst) {
     return Container(
       margin: const EdgeInsets.only(bottom: 10),
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),

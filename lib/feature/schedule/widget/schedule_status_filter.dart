@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:yomi/core/theme/app_theme.dart';
 import 'package:yomi/data/models/schedule_entry.dart';
-import 'package:yomi/feature/schedule/widget/section_title.dart';
+import 'package:yomi/shared/widgets/section_title.dart';
 
 /// "Episodes" heading with chips: "All" plus every [ScheduleStatus].
 class ScheduleStatusFilter extends StatelessWidget {

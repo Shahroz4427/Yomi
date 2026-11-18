@@ -2,14 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:yomi/core/theme/app_theme.dart';
 import 'package:yomi/data/models/schedule_entry.dart';
 import 'package:yomi/feature/schedule/widget/schedule_tile.dart';
-import 'package:yomi/feature/schedule/widget/section_title.dart';
+import 'package:yomi/shared/widgets/section_title.dart';
 
 /// "<Day> Releases" heading and the episodes of that day, or an empty state.
 class ScheduleList extends StatelessWidget {
-  const ScheduleList({super.key, required this.dayName, required this.entries});
+  const ScheduleList({
+    super.key,
+    required this.dayName,
+    required this.entries,
+    required this.onEntryTap,
+  });
 
   final String dayName;
   final List<ScheduleEntry> entries;
+  final ValueChanged<ScheduleEntry> onEntryTap;
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +41,8 @@ class ScheduleList extends StatelessWidget {
           if (entries.isEmpty)
             const _EmptyState(message: 'No episodes found')
           else
-            for (final entry in entries) ScheduleTile(entry: entry),
+            for (final entry in entries)
+              ScheduleTile(entry: entry, onTap: () => onEntryTap(entry)),
         ],
       ),
     );

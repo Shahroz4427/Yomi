@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:yomi/data/models/top_category.dart';
 import 'package:yomi/data/repositories/anime_repository.dart';
+import 'package:yomi/feature/details/anime_details_navigation.dart';
 import 'package:yomi/feature/top/widget/top_anime_list.dart';
 import 'package:yomi/feature/top/widget/top_category_filters.dart';
 import 'package:yomi/feature/top/widget/top_header.dart';
@@ -33,7 +34,18 @@ class _TopScreenState extends State<TopScreen> {
             },
           ),
           const SizedBox(height: 18),
-          Expanded(child: TopAnimeList(animes: animes)),
+          Expanded(
+            child: TopAnimeList(
+              animes: animes,
+              onAnimeTap: (anime) {
+                openAnimeDetails(
+                  context,
+                  anime: anime,
+                  repository: widget.repository,
+                );
+              },
+            ),
+          ),
         ],
       ),
     );

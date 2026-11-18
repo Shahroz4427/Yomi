@@ -5,9 +5,10 @@ import 'package:yomi/feature/top/widget/top_anime_tile.dart';
 
 /// Ranked list of anime, or an empty message when there is nothing to show.
 class TopAnimeList extends StatelessWidget {
-  const TopAnimeList({super.key, required this.animes});
+  const TopAnimeList({super.key, required this.animes, required this.onAnimeTap});
 
   final List<AnimeItem> animes;
+  final ValueChanged<AnimeItem> onAnimeTap;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +25,13 @@ class TopAnimeList extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(12, 0, 12, 20),
       itemCount: animes.length,
       itemBuilder: (context, index) {
-        return TopAnimeTile(anime: animes[index], rank: index + 1);
+        final anime = animes[index];
+
+        return TopAnimeTile(
+          anime: anime,
+          rank: index + 1,
+          onTap: () => onAnimeTap(anime),
+        );
       },
     );
   }

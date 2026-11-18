@@ -1,4 +1,5 @@
 import 'package:yomi/data/models/anime_banner.dart';
+import 'package:yomi/data/models/anime_details.dart';
 import 'package:yomi/data/models/anime_item.dart';
 import 'package:yomi/data/models/browse_category.dart';
 import 'package:yomi/data/models/top_category.dart';
@@ -30,4 +31,13 @@ abstract interface class AnimeRepository {
 
   /// Ranked anime for the Top screen.
   List<AnimeItem> getTopAnime(TopCategory category);
+
+  /// Every anime once, without duplicates.
+  List<AnimeItem> getAllAnime();
+
+  /// Anime whose title contains [query] (case insensitive).
+  List<AnimeItem> searchAnime(String query);
+
+  /// Synopsis, genres and episodes for the details and player screens.
+  AnimeDetails getAnimeDetails(AnimeItem anime);
 }

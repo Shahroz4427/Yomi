@@ -7,12 +7,21 @@ import 'package:yomi/shared/widgets/poster_image.dart';
 /// One scheduled episode: poster, title, genre, episode number, status and
 /// release time.
 class ScheduleTile extends StatelessWidget {
-  const ScheduleTile({super.key, required this.entry});
+  const ScheduleTile({super.key, required this.entry, required this.onTap});
 
   final ScheduleEntry entry;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: onTap,
+      child: _buildCard(),
+    );
+  }
+
+  Widget _buildCard() {
     final anime = entry.anime;
     final statusColor = entry.status.color;
 

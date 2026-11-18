@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:yomi/app/shell/bottom_bar.dart';
+import 'package:yomi/app/shell/drawer_navigation.dart';
 import 'package:yomi/app/shell/side_drawer/side_drawer.dart';
 import 'package:yomi/app/shell/top_bar.dart';
 import 'package:yomi/data/repositories/anime_repository.dart';
@@ -36,9 +37,20 @@ class _MainScreenState extends State<MainScreen> {
     HomeScreen(repository: widget.animeRepository),
     BrowseScreen(repository: widget.animeRepository),
     TopScreen(repository: widget.animeRepository),
-    ScheduleScreen(repository: widget.scheduleRepository),
-    MyListScreen(repository: widget.myListRepository),
+    ScheduleScreen(
+      repository: widget.scheduleRepository,
+      animeRepository: widget.animeRepository,
+    ),
+    MyListScreen(
+      repository: widget.myListRepository,
+      animeRepository: widget.animeRepository,
+    ),
   ];
+
+  late final DrawerNavigation _drawerNavigation = DrawerNavigation(
+    repository: widget.animeRepository,
+    onHome: () => _onItemSelected(0),
+  );
 
   void _onItemSelected(int index) {
     setState(() => _selectedIndex = index);
@@ -47,8 +59,13 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const TopBar(),
-      drawer: const SideDrawer(),
+      appBar: TopBar(animeRepository: widget.animeRepository),
+      drawer: SideDrawer(
+        onItemSelected: (item) => _drawerNavigation.open(context, item),
+        onCommunityTap: () {
+          DrawerNavigation.showComingSoon(context, 'Community');
+        },
+      ),
       body: IndexedStack(index: _selectedIndex, children: _screens),
       bottomNavigationBar: BottomBar(
         selectedIndex: _selectedIndex,

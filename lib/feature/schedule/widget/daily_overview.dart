@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:yomi/core/theme/app_theme.dart';
 import 'package:yomi/data/models/schedule_entry.dart';
 import 'package:yomi/feature/schedule/widget/schedule_status_color.dart';
-import 'package:yomi/feature/schedule/widget/section_title.dart';
+import 'package:yomi/shared/widgets/section_title.dart';
 
 /// "Daily Overview" block with total, released and upcoming counters.
 class DailyOverview extends StatelessWidget {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:yomi/core/theme/app_theme.dart';
 
-/// Bold heading used above each block of the schedule screen.
+/// Bold heading used above a block of content.
 class SectionTitle extends StatelessWidget {
   const SectionTitle(this.text, {super.key});
 

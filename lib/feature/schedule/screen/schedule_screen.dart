@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:yomi/core/utils/date_labels.dart';
 import 'package:yomi/data/models/schedule_entry.dart';
+import 'package:yomi/data/repositories/anime_repository.dart';
 import 'package:yomi/data/repositories/schedule_repository.dart';
+import 'package:yomi/feature/details/anime_details_navigation.dart';
 import 'package:yomi/feature/schedule/widget/daily_overview.dart';
 import 'package:yomi/feature/schedule/widget/schedule_header.dart';
 import 'package:yomi/feature/schedule/widget/schedule_list.dart';
@@ -10,9 +12,16 @@ import 'package:yomi/feature/schedule/widget/week_selector.dart';
 
 /// Schedule tab: week picker, daily overview and the episodes of the day.
 class ScheduleScreen extends StatefulWidget {
-  const ScheduleScreen({super.key, required this.repository});
+  const ScheduleScreen({
+    super.key,
+    required this.repository,
+    required this.animeRepository,
+  });
 
   final ScheduleRepository repository;
+
+  /// Used to open the details screen of a scheduled anime.
+  final AnimeRepository animeRepository;
 
   @override
   State<ScheduleScreen> createState() => _ScheduleScreenState();
@@ -104,6 +113,13 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                 ScheduleList(
                   dayName: DateLabels.weekday(_selectedDate.weekday),
                   entries: visibleEntries,
+                  onEntryTap: (entry) {
+                    openAnimeDetails(
+                      context,
+                      anime: entry.anime,
+                      repository: widget.animeRepository,
+                    );
+                  },
                 ),
               ],
             ),

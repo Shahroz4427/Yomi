@@ -4,18 +4,22 @@ import 'package:yomi/shared/widgets/anime_card.dart';
 
 /// Grid of anime cards, or an empty message when there is nothing to show.
 class AnimeGrid extends StatelessWidget {
-  const AnimeGrid({super.key, required this.animes});
+  const AnimeGrid({
+    super.key,
+    required this.animes,
+    this.onAnimeTap,
+    this.emptyMessage = 'No anime available',
+  });
 
   final List<AnimeItem> animes;
+  final ValueChanged<AnimeItem>? onAnimeTap;
+  final String emptyMessage;
 
   @override
   Widget build(BuildContext context) {
     if (animes.isEmpty) {
       return Center(
-        child: Text(
-          'No anime available',
-          style: Theme.of(context).textTheme.bodyMedium,
-        ),
+        child: Text(emptyMessage, style: Theme.of(context).textTheme.bodyMedium),
       );
     }
 
@@ -28,7 +32,14 @@ class AnimeGrid extends StatelessWidget {
         mainAxisSpacing: 16,
         childAspectRatio: 0.62,
       ),
-      itemBuilder: (context, index) => AnimeCard(anime: animes[index]),
+      itemBuilder: (context, index) {
+        final anime = animes[index];
+
+        return AnimeCard(
+          anime: anime,
+          onTap: onAnimeTap == null ? null : () => onAnimeTap!(anime),
+        );
+      },
     );
   }
 }

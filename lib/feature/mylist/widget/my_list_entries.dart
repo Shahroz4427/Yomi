@@ -8,10 +8,12 @@ class MyListEntries extends StatelessWidget {
   const MyListEntries({
     super.key,
     required this.entries,
+    required this.onEntryTap,
     required this.onOptionsTap,
   });
 
   final List<MyListEntry> entries;
+  final ValueChanged<MyListEntry> onEntryTap;
   final VoidCallback onOptionsTap;
 
   @override
@@ -25,7 +27,11 @@ class MyListEntries extends StatelessWidget {
         for (final entry in entries)
           Padding(
             padding: const EdgeInsets.only(bottom: 12),
-            child: MyListTile(entry: entry, onOptionsTap: onOptionsTap),
+            child: MyListTile(
+              entry: entry,
+              onTap: () => onEntryTap(entry),
+              onOptionsTap: onOptionsTap,
+            ),
           ),
       ],
     );

@@ -1,20 +1,46 @@
 import 'package:flutter/material.dart';
+import 'package:yomi/data/repositories/anime_repository.dart';
+import 'package:yomi/feature/search/widget/search_results.dart';
+import 'package:yomi/feature/search/widget/trending_searches.dart';
 
-class SearchScreen extends StatelessWidget {
-  const SearchScreen({super.key});
+/// Search page: trending searches until the user types, then matching anime.
+class SearchScreen extends StatefulWidget {
+  const SearchScreen({super.key, required this.repository});
 
-  static const List<String> trendingSearches = [
-    'Solo Leveling',
-    'Demon Slayer',
-    'Jujutsu Kaisen',
-    'One Piece',
-    'Attack on Titan',
-    'Naruto',
-    'Blue Lock',
-    'Chainsaw Man',
-    'My Hero Academia',
-    'Frieren',
-  ];
+  final AnimeRepository repository;
+
+  @override
+  State<SearchScreen> createState() => _SearchScreenState();
+}
+
+class _SearchScreenState extends State<SearchScreen> {
+  final TextEditingController _controller = TextEditingController();
+
+  String _query = '';
+
+  void _setQuery(String value) {
+    setState(() => _query = value.trim());
+  }
+
+  // Used by the trending chips: fill the field and search right away.
+  void _searchFor(String term) {
+    _controller.value = TextEditingValue(
+      text: term,
+      selection: TextSelection.collapsed(offset: term.length),
+    );
+    _setQuery(term);
+  }
+
+  void _clear() {
+    _controller.clear();
+    _setQuery('');
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,9 +51,12 @@ class SearchScreen extends StatelessWidget {
       appBar: AppBar(
         titleSpacing: 0,
         title: TextField(
+          controller: _controller,
           autofocus: true,
           cursorColor: colors.primary,
           style: theme.textTheme.bodyLarge,
+          textInputAction: TextInputAction.search,
+          onChanged: _setQuery,
           decoration: InputDecoration(
             hintText: 'Search anime...',
             hintStyle: theme.textTheme.bodyMedium,
@@ -38,70 +67,18 @@ class SearchScreen extends StatelessWidget {
             contentPadding: EdgeInsets.zero,
           ),
         ),
-      ),
-
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Trending heading
-            Row(
-              children: [
-                Icon(
-                  Icons.trending_up_rounded,
-                  color: colors.primary,
-                  size: 20,
-                ),
-                const SizedBox(width: 7),
-                Text(
-                  'Trending Searches',
-                  style: theme.textTheme.titleMedium?.copyWith(
-                    fontSize: 15,
-                  ),
-                ),
-              ],
+        actions: [
+          if (_query.isNotEmpty)
+            IconButton(
+              onPressed: _clear,
+              icon: const Icon(Icons.close_rounded),
+              tooltip: 'Clear',
             ),
-
-            const SizedBox(height: 14),
-
-            // Trending search pills
-            Wrap(
-              spacing: 8,
-              runSpacing: 10,
-              children: trendingSearches.map((anime) {
-                return InkWell(
-                  onTap: () {
-                    debugPrint('Selected: $anime');
-                  },
-                  borderRadius: BorderRadius.circular(30),
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 14,
-                      vertical: 9,
-                    ),
-                    decoration: BoxDecoration(
-                      color: colors.surface,
-                      borderRadius: BorderRadius.circular(30),
-                      border: Border.all(
-                        color: colors.primary.withValues(alpha: 0.25),
-                      ),
-                    ),
-                    child: Text(
-                      anime,
-                      style: theme.textTheme.bodySmall?.copyWith(
-                        color: colors.onSurface,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 11,
-                      ),
-                    ),
-                  ),
-                );
-              }).toList(),
-            ),
-          ],
-        ),
+        ],
       ),
+      body: _query.isEmpty
+          ? TrendingSearches(onSelected: _searchFor)
+          : SearchResults(query: _query, repository: widget.repository),
     );
   }
 }

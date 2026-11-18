@@ -3,11 +3,12 @@ import 'package:yomi/data/models/browse_category.dart';
 import 'package:yomi/data/repositories/anime_repository.dart';
 import 'package:yomi/feature/browse/filters/filter_bottom_sheet.dart';
 import 'package:yomi/feature/browse/filters/filter_options.dart';
-import 'package:yomi/feature/browse/widget/anime_grid.dart';
 import 'package:yomi/feature/browse/widget/anime_search_field.dart';
 import 'package:yomi/feature/browse/widget/browse_header.dart';
 import 'package:yomi/feature/browse/widget/category_selector.dart';
 import 'package:yomi/feature/browse/widget/filter_button.dart';
+import 'package:yomi/feature/details/anime_details_navigation.dart';
+import 'package:yomi/shared/widgets/anime_grid.dart';
 
 /// Browse tab: search, category chips, filter button and anime grid.
 ///
@@ -84,7 +85,18 @@ class _BrowseScreenState extends State<BrowseScreen> {
                 ],
               ),
               const SizedBox(height: 17),
-              Expanded(child: AnimeGrid(animes: animeList)),
+              Expanded(
+                child: AnimeGrid(
+                  animes: animeList,
+                  onAnimeTap: (anime) {
+                    openAnimeDetails(
+                      context,
+                      anime: anime,
+                      repository: widget.repository,
+                    );
+                  },
+                ),
+              ),
             ],
           ),
         ),

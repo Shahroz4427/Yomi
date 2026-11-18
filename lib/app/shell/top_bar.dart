@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:yomi/core/constants/app_assets.dart';
+import 'package:yomi/data/repositories/anime_repository.dart';
+import 'package:yomi/feature/auth/screen/login_screen.dart';
 import 'package:yomi/feature/search/screen/search_screen.dart';
 
 /// App bar with the menu button, logo, search and login.
 class TopBar extends StatelessWidget implements PreferredSizeWidget {
-  const TopBar({super.key});
+  const TopBar({super.key, required this.animeRepository});
+
+  final AnimeRepository animeRepository;
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
@@ -12,7 +16,16 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
   void _openSearch(BuildContext context) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const SearchScreen()),
+      MaterialPageRoute(
+        builder: (context) => SearchScreen(repository: animeRepository),
+      ),
+    );
+  }
+
+  void _openLogin(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const LoginScreen()),
     );
   }
 
@@ -41,9 +54,7 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
             child: SizedBox(
               height: 36,
               child: ElevatedButton(
-                onPressed: () {
-                  // TODO: Open login screen
-                },
+                onPressed: () => _openLogin(context),
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(horizontal: 18),
                   shape: RoundedRectangleBorder(

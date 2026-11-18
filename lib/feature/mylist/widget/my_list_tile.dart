@@ -8,14 +8,24 @@ class MyListTile extends StatelessWidget {
   const MyListTile({
     super.key,
     required this.entry,
+    required this.onTap,
     required this.onOptionsTap,
   });
 
   final MyListEntry entry;
+  final VoidCallback onTap;
   final VoidCallback onOptionsTap;
 
   @override
   Widget build(BuildContext context) {
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: onTap,
+      child: _buildCard(),
+    );
+  }
+
+  Widget _buildCard() {
     final anime = entry.anime;
 
     return Container(
