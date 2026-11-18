@@ -1,23 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:yomi/feature/splash/screen/splash_screen.dart';
-import 'package:yomi/core/theme/app_theme.dart';
+import 'package:yomi/app/yomi_app.dart';
+import 'package:yomi/data/repositories/static/static_anime_repository.dart';
+import 'package:yomi/data/repositories/static/static_my_list_repository.dart';
+import 'package:yomi/data/repositories/static/static_schedule_repository.dart';
 
+/// Composition root: the only place that decides which data source the app
+/// uses. To switch to the REST API, pass API-backed repositories here.
 void main() {
-  runApp(const MyApp());
+  runApp(
+    const YomiApp(
+      animeRepository: StaticAnimeRepository(),
+      scheduleRepository: StaticScheduleRepository(),
+      myListRepository: StaticMyListRepository(),
+    ),
+  );
 }
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Yomi',
-      theme: AppTheme.darkTheme,
-      themeMode: ThemeMode.dark,
-      home: const SplashScreen(),
-    );
-  }
-}
-

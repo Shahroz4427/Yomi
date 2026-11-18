@@ -18,7 +18,10 @@ class AnimeSearchField extends StatelessWidget {
         hintText: 'Search anime...',
         prefixIcon: Icon(Icons.search_rounded, color: colors.onSurfaceVariant),
         suffixIcon: IconButton(
-          onPressed: controller.clear,
+          onPressed: () {
+            controller.clear();
+            FocusManager.instance.primaryFocus?.unfocus(); // closes keyboard
+          },
           icon: Icon(
             Icons.close_rounded,
             color: colors.onSurfaceVariant,

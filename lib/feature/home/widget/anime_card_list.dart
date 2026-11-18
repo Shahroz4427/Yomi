@@ -1,10 +1,21 @@
-import 'package:yomi/shared/widgets/arrow_button.dart';
-import 'package:yomi/shared/widgets/anime_card.dart';
-import 'package:yomi/core/theme/app_theme.dart';
-import 'package:yomi/model/anime_item.dart';
 import 'package:flutter/material.dart';
+import 'package:yomi/data/models/anime_item.dart';
+import 'package:yomi/feature/home/widget/anime_card_list_header.dart';
+import 'package:yomi/shared/widgets/anime_card.dart';
 
+/// Horizontally scrolling list of [AnimeCard]s with a heading and arrow
+/// buttons that scroll the list.
 class AnimeCardList extends StatefulWidget {
+  const AnimeCardList({
+    super.key,
+    required this.title,
+    required this.onViewAll,
+    required this.onAnimeTap,
+    required this.items,
+    required this.cardWidth,
+    required this.topIcon,
+    required this.topIconColor,
+  });
 
   final String title;
   final VoidCallback onViewAll;
@@ -14,22 +25,13 @@ class AnimeCardList extends StatefulWidget {
   final IconData topIcon;
   final Color topIconColor;
 
-  const AnimeCardList({
-    super.key,
-    required this.title,
-    required this.onViewAll,
-    required this.onAnimeTap,
-    required this.items,
-    required this.cardWidth,
-    required this.topIcon,
-    required this.topIconColor
-  });
-
   @override
   State<AnimeCardList> createState() => _AnimeCardListState();
 }
 
 class _AnimeCardListState extends State<AnimeCardList> {
+  static const double _listHeight = 285;
+
   final ScrollController _scrollController = ScrollController();
 
   bool _canScrollLeft = false;
@@ -40,9 +42,7 @@ class _AnimeCardListState extends State<AnimeCardList> {
     super.initState();
     _scrollController.addListener(_updateArrows);
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _updateArrows();
-    });
+    WidgetsBinding.instance.addPostFrameCallback((_) => _updateArrows());
   }
 
   @override
@@ -73,7 +73,7 @@ class _AnimeCardListState extends State<AnimeCardList> {
     }
   }
 
-  void _scroll(bool forward) {
+  void _scroll({required bool forward}) {
     if (!_scrollController.hasClients) return;
 
     final position = _scrollController.position;
@@ -99,8 +99,6 @@ class _AnimeCardListState extends State<AnimeCardList> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     if (widget.items.isEmpty) {
       return const SizedBox.shrink();
     }
@@ -108,69 +106,18 @@ class _AnimeCardListState extends State<AnimeCardList> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Section heading and navigation controls.
-        Padding(
-          padding: const EdgeInsets.only(bottom: 14),
-          child: Row(
-            children: [
-               Icon(
-                widget.topIcon,
-                color: widget.topIconColor,
-                size: 22,
-              ),
-              const SizedBox(width: 5),
-
-              Expanded(
-                child: Text(
-                  widget.title,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: theme.textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w800,
-                  ),
-                ),
-              ),
-
-              TextButton(
-                onPressed: widget.onViewAll,
-                style: TextButton.styleFrom(
-                  foregroundColor: AppTheme.accentColor,
-                  padding: const EdgeInsets.symmetric(horizontal: 8),
-                  minimumSize: const Size(0, 36),
-                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                ),
-                child: const Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text('View all',style: TextStyle(color: Colors.white),),
-                    SizedBox(width: 3),
-                    Icon(Icons.chevron_right_rounded, size: 17,color: Colors.white,),
-                  ],
-                ),
-              ),
-
-              const SizedBox(width: 4),
-
-              ArrowButton(
-                icon: Icons.chevron_left_rounded,
-                enabled: _canScrollLeft,
-                onTap: () => _scroll(false),
-              ),
-
-              const SizedBox(width: 6),
-
-              ArrowButton(
-                icon: Icons.chevron_right_rounded,
-                enabled: _canScrollRight,
-                onTap: () => _scroll(true),
-              ),
-            ],
-          ),
+        AnimeCardListHeader(
+          title: widget.title,
+          icon: widget.topIcon,
+          iconColor: widget.topIconColor,
+          canScrollLeft: _canScrollLeft,
+          canScrollRight: _canScrollRight,
+          onViewAll: widget.onViewAll,
+          onScrollLeft: () => _scroll(forward: false),
+          onScrollRight: () => _scroll(forward: true),
         ),
-
-        // Horizontal anime list.
         SizedBox(
-          height: 285,
+          height: _listHeight,
           child: ListView.separated(
             controller: _scrollController,
             scrollDirection: Axis.horizontal,

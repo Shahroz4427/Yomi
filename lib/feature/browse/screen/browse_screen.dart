@@ -1,24 +1,31 @@
 import 'package:flutter/material.dart';
-import 'package:yomi/data/browse_category_data.dart';
+import 'package:yomi/data/models/browse_category.dart';
+import 'package:yomi/data/repositories/anime_repository.dart';
+import 'package:yomi/feature/browse/filters/filter_bottom_sheet.dart';
 import 'package:yomi/feature/browse/filters/filter_options.dart';
 import 'package:yomi/feature/browse/widget/anime_grid.dart';
 import 'package:yomi/feature/browse/widget/anime_search_field.dart';
 import 'package:yomi/feature/browse/widget/browse_header.dart';
 import 'package:yomi/feature/browse/widget/category_selector.dart';
-import 'package:yomi/feature/browse/widget/filter_bottom_sheet.dart';
 import 'package:yomi/feature/browse/widget/filter_button.dart';
 
-class BrowseAnimeScreen extends StatefulWidget {
-  const BrowseAnimeScreen({super.key});
+/// Browse tab: search, category chips, filter button and anime grid.
+///
+/// Owns only the page state (selected category and applied filters) and
+/// wires the smaller widgets together.
+class BrowseScreen extends StatefulWidget {
+  const BrowseScreen({super.key, required this.repository});
+
+  final AnimeRepository repository;
 
   @override
-  State<BrowseAnimeScreen> createState() => _BrowseAnimeScreenState();
+  State<BrowseScreen> createState() => _BrowseScreenState();
 }
 
-class _BrowseAnimeScreenState extends State<BrowseAnimeScreen> {
+class _BrowseScreenState extends State<BrowseScreen> {
   final TextEditingController _searchController = TextEditingController();
 
-  String _selectedCategory = BrowseCategoryData.categories.first;
+  BrowseCategory _selectedCategory = BrowseCategory.mostPopular;
 
   // Filters that were confirmed with "Apply".
   FilterSelection _selectedFilters = {};
@@ -43,7 +50,7 @@ class _BrowseAnimeScreenState extends State<BrowseAnimeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final animeList = BrowseCategoryData.animeForCategory(_selectedCategory);
+    final animeList = widget.repository.getBrowseAnime(_selectedCategory);
 
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -62,7 +69,7 @@ class _BrowseAnimeScreenState extends State<BrowseAnimeScreen> {
                 children: [
                   Expanded(
                     child: CategorySelector(
-                      categories: BrowseCategoryData.categories,
+                      categories: BrowseCategory.values,
                       selected: _selectedCategory,
                       onSelected: (category) {
                         setState(() => _selectedCategory = category);

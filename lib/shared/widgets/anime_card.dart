@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:yomi/model/anime_item.dart';
+import 'package:yomi/data/models/anime_item.dart';
 import 'package:yomi/shared/widgets/anime_poster_badge.dart';
 
 class AnimeCard extends StatelessWidget {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:yomi/data/models/browse_category.dart';
 
 /// Horizontally scrolling category chips ("Most Popular", "Trending Now"...).
 class CategorySelector extends StatelessWidget {
@@ -9,9 +10,9 @@ class CategorySelector extends StatelessWidget {
     required this.onSelected,
   });
 
-  final List<String> categories;
-  final String selected;
-  final ValueChanged<String> onSelected;
+  final List<BrowseCategory> categories;
+  final BrowseCategory selected;
+  final ValueChanged<BrowseCategory> onSelected;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +26,7 @@ class CategorySelector extends StatelessWidget {
           final category = categories[index];
 
           return _CategoryChip(
-            label: category,
+            label: category.label,
             isSelected: category == selected,
             onTap: () => onSelected(category),
           );
@@ -63,7 +64,7 @@ class _CategoryChip extends StatelessWidget {
           child: Text(
             label,
             style: TextStyle(
-              color: isSelected ? colors.onPrimary : colors.onSurfaceVariant,
+              color: colors.onSurfaceVariant,
               fontSize: 10,
               fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
             ),

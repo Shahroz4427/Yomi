@@ -7,13 +7,20 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:yomi/app/yomi_app.dart';
+import 'package:yomi/data/repositories/static/static_anime_repository.dart';
+import 'package:yomi/data/repositories/static/static_my_list_repository.dart';
+import 'package:yomi/data/repositories/static/static_schedule_repository.dart';
 
-import 'package:yomi/main.dart';
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+    await tester.pumpWidget(const YomiApp(
+          animeRepository: StaticAnimeRepository(),
+          scheduleRepository: StaticScheduleRepository(),
+          myListRepository: StaticMyListRepository(),
+    ));
 
     // Verify that our counter starts at 0.
     expect(find.text('0'), findsOneWidget);

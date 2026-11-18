@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:yomi/model/anime_item.dart';
+import 'package:yomi/data/models/anime_item.dart';
 import 'package:yomi/shared/widgets/anime_card.dart';
 
 /// Grid of anime cards, or an empty message when there is nothing to show.
