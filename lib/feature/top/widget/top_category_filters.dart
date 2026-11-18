@@ -15,20 +15,27 @@ class TopCategoryFilters extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: Wrap(
-        spacing: 9,
-        runSpacing: 9,
-        children: [
-          for (final category in TopCategory.values)
-            TopCategoryChip(
-              category: category,
-              isSelected: category == selected,
-              onTap: () => onSelected(category),
+    // The parent Column centers its children. Without a full-width box the
+    // Wrap shrinks to its chips and gets centered when they all fit on one
+    // line (wide screens). The infinite width keeps it left-aligned.
+    return SizedBox(
+        width: double.infinity,
+        child: Padding(
+            padding: EdgeInsetsGeometry.symmetric(horizontal: 15),
+            child: Wrap(
+              alignment: WrapAlignment.start,
+              spacing: 9,
+              runSpacing: 9,
+              children: [
+                for (final category in TopCategory.values)
+                  TopCategoryChip(
+                    category: category,
+                    isSelected: category == selected,
+                    onTap: () => onSelected(category),
+                  ),
+              ],
             ),
-        ],
-      ),
+        )
     );
   }
 }
